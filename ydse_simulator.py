@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLabel, QSlider
+from PyQt5.QtGui import QPalette, QColor, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 class YDSESimulator(QMainWindow):
@@ -9,6 +10,15 @@ class YDSESimulator(QMainWindow):
         super().__init__()
         self.setWindowTitle('Young\'s Double-Slit Experiment Simulator')
         self.setGeometry(100, 100, 800, 600)
+
+        # Set dark background and grainy texture
+        palette = QPalette()
+        palette.setColor(QPalette.Window, QColor(30, 30, 30))  # Dark background color
+        self.setPalette(palette)
+
+        # Set font to Poppins
+        font = QFont('Poppins', 10)
+        self.setFont(font)
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
@@ -25,6 +35,7 @@ class YDSESimulator(QMainWindow):
     def create_widgets(self):
         # Wavelength Slider
         self.wavelength_label = QLabel('Wavelength (nm): 500')
+        self.wavelength_label.setStyleSheet("color: white;")  # Set text color to white
         self.wavelength_slider = QSlider()
         self.wavelength_slider.setOrientation(1)  # Horizontal
         self.wavelength_slider.setMinimum(100)  # Minimum wavelength in nm
@@ -33,7 +44,8 @@ class YDSESimulator(QMainWindow):
         self.wavelength_slider.valueChanged.connect(self.update_label_and_plot)
 
         # Slit Separation Slider (in mm)
-        self.slit_label = QLabel('Slit Separation (mm): 5.0')  # Default to 5.0 mm
+        self.slit_label = QLabel('Slit Separation (mm): 5.0')
+        self.slit_label.setStyleSheet("color: white;")  # Set text color to white
         self.slit_slider = QSlider()
         self.slit_slider.setOrientation(1)  # Horizontal
         self.slit_slider.setMinimum(1)  # Minimum slit separation in mm
@@ -42,7 +54,8 @@ class YDSESimulator(QMainWindow):
         self.slit_slider.valueChanged.connect(self.update_label_and_plot)
 
         # Screen Distance Slider (in cm)
-        self.distance_label = QLabel('Distance to Screen (cm): 100')  # Default to 100 cm
+        self.distance_label = QLabel('Distance to Screen (cm): 100')
+        self.distance_label.setStyleSheet("color: white;")  # Set text color to white
         self.distance_slider = QSlider()
         self.distance_slider.setOrientation(1)  # Horizontal
         self.distance_slider.setMinimum(100)  # Minimum distance in cm
@@ -63,9 +76,9 @@ class YDSESimulator(QMainWindow):
 
     def update_label_and_plot(self):
         self.wavelength_label.setText(f'Wavelength (nm): {self.wavelength_slider.value()}')
-        self.slit_label.setText(f'Slit Separation (mm): {self.slit_slider.value()}')  # Value in mm
-        self.distance_label.setText(f'Distance to Screen (cm): {self.distance_slider.value()}')  # Value in cm
-        
+        self.slit_label.setText(f'Slit Separation (mm): {self.slit_slider.value()}')
+        self.distance_label.setText(f'Distance to Screen (cm): {self.distance_slider.value()}')
+
         # Update the interference pattern in real-time
         self.visualize_pattern()
 
@@ -83,12 +96,12 @@ class YDSESimulator(QMainWindow):
         x = np.linspace(-0.5, 0.5, num_points)  # Screen position
         intensity = (np.sin(np.pi * slit_separation * x / (wavelength * screen_distance)))**2
 
-        ax.plot(x, intensity, color='blue')
-        ax.set_title('Interference Pattern')
-        ax.set_xlabel('Position on Screen (m)')
-        ax.set_ylabel('Intensity (arbitrary units)')
+        ax.plot(x, intensity, color='green')  # Set plot color to green
+        ax.set_title('Interference Pattern', color='green')  # Set title color to green
+        ax.set_xlabel('Position on Screen (m)', color='green')  # Set x-label color to green
+        ax.set_ylabel('Intensity (arbitrary units)', color='green')  # Set y-label color to green
         ax.set_ylim(0, 1)
-        ax.grid()
+        ax.grid(color='grey')  # Set grid color to grey
 
         self.canvas.draw()  # Update the plot on the canvas
 
