@@ -92,6 +92,9 @@ class YDSESimulator(QMainWindow):
         self.figure.clear()  # Clear previous plots
         ax = self.figure.add_subplot(111)  # Add subplot
 
+        # Set background color for the axes
+        ax.set_facecolor('black')  # Set graph background to black
+
         num_points = 1000  # Number of points to sample on the screen
         x = np.linspace(-0.5, 0.5, num_points)  # Screen position
         intensity = (np.sin(np.pi * slit_separation * x / (wavelength * screen_distance)))**2
@@ -104,6 +107,7 @@ class YDSESimulator(QMainWindow):
         ax.grid(color='grey')  # Set grid color to grey
 
         self.canvas.draw()  # Update the plot on the canvas
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
