@@ -41,13 +41,13 @@ class YDSESimulator(QMainWindow):
         self.slit_slider.setValue(5)  # Default value (5 mm)
         self.slit_slider.valueChanged.connect(self.update_label_and_plot)
 
-        # Screen Distance Slider (in m)
-        self.distance_label = QLabel('Distance to Screen (m): 1.0')  # Default to 1.0 m
+        # Screen Distance Slider (in cm)
+        self.distance_label = QLabel('Distance to Screen (cm): 100')  # Default to 100 cm
         self.distance_slider = QSlider()
         self.distance_slider.setOrientation(1)  # Horizontal
-        self.distance_slider.setMinimum(1)  # Minimum distance in m
-        self.distance_slider.setMaximum(5)  # Maximum distance in m
-        self.distance_slider.setValue(1)  # Default value (1 m)
+        self.distance_slider.setMinimum(100)  # Minimum distance in cm
+        self.distance_slider.setMaximum(500)  # Maximum distance in cm
+        self.distance_slider.setValue(100)  # Default value (100 cm)
         self.distance_slider.valueChanged.connect(self.update_label_and_plot)
 
         # Adding widgets to the layout
@@ -64,7 +64,7 @@ class YDSESimulator(QMainWindow):
     def update_label_and_plot(self):
         self.wavelength_label.setText(f'Wavelength (nm): {self.wavelength_slider.value()}')
         self.slit_label.setText(f'Slit Separation (mm): {self.slit_slider.value()}')  # Value in mm
-        self.distance_label.setText(f'Distance to Screen (m): {self.distance_slider.value()}')  # Value in m
+        self.distance_label.setText(f'Distance to Screen (cm): {self.distance_slider.value()}')  # Value in cm
         
         # Update the interference pattern in real-time
         self.visualize_pattern()
@@ -73,7 +73,7 @@ class YDSESimulator(QMainWindow):
         # Get current values
         wavelength = self.wavelength_slider.value() * 1e-9  # Convert nm to meters
         slit_separation = self.slit_slider.value() * 1e-3  # Convert mm to meters
-        screen_distance = self.distance_slider.value()  # Get screen distance in meters
+        screen_distance = self.distance_slider.value() / 100.0  # Convert cm to meters
         
         # Create a new figure for the interference pattern
         self.figure.clear()  # Clear previous plots
