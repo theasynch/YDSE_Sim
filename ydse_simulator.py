@@ -41,11 +41,22 @@ class YDSESimulator(QMainWindow):
         self.slit_slider.setValue(5)  # Default value (5 mm)
         self.slit_slider.valueChanged.connect(self.update_label_and_plot)
 
+        # Screen Distance Slider (in m)
+        self.distance_label = QLabel('Distance to Screen (m): 1.0')  # Default to 1.0 m
+        self.distance_slider = QSlider()
+        self.distance_slider.setOrientation(1)  # Horizontal
+        self.distance_slider.setMinimum(1)  # Minimum distance in m
+        self.distance_slider.setMaximum(5)  # Maximum distance in m
+        self.distance_slider.setValue(1)  # Default value (1 m)
+        self.distance_slider.valueChanged.connect(self.update_label_and_plot)
+
         # Adding widgets to the layout
         self.layout.addWidget(self.wavelength_label)
         self.layout.addWidget(self.wavelength_slider)
         self.layout.addWidget(self.slit_label)
         self.layout.addWidget(self.slit_slider)
+        self.layout.addWidget(self.distance_label)
+        self.layout.addWidget(self.distance_slider)
 
         # Initial plot
         self.update_label_and_plot()
@@ -53,6 +64,7 @@ class YDSESimulator(QMainWindow):
     def update_label_and_plot(self):
         self.wavelength_label.setText(f'Wavelength (nm): {self.wavelength_slider.value()}')
         self.slit_label.setText(f'Slit Separation (mm): {self.slit_slider.value()}')  # Value in mm
+        self.distance_label.setText(f'Distance to Screen (m): {self.distance_slider.value()}')  # Value in m
         
         # Update the interference pattern in real-time
         self.visualize_pattern()
@@ -61,12 +73,12 @@ class YDSESimulator(QMainWindow):
         # Get current values
         wavelength = self.wavelength_slider.value() * 1e-9  # Convert nm to meters
         slit_separation = self.slit_slider.value() * 1e-3  # Convert mm to meters
+        screen_distance = self.distance_slider.value()  # Get screen distance in meters
         
         # Create a new figure for the interference pattern
         self.figure.clear()  # Clear previous plots
         ax = self.figure.add_subplot(111)  # Add subplot
 
-        screen_distance = 1.0  # Distance from slits to screen (in meters)
         num_points = 1000  # Number of points to sample on the screen
         x = np.linspace(-0.5, 0.5, num_points)  # Screen position
         intensity = (np.sin(np.pi * slit_separation * x / (wavelength * screen_distance)))**2
