@@ -1,3 +1,8 @@
+<a text-align="center" href="https://github.com/theasynch/YDSE_Sim/releases/tag/v1.0">Download Available Now</a>
+
+
+---
+
 # 🌌 Young's Double-Slit Experiment Simulator
 
 A real-time simulation of the classic Young's Double-Slit Experiment, visualizing the wave interference pattern with customizable parameters for wavelength, slit separation, and screen distance.
